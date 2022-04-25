@@ -1,0 +1,25 @@
+.content {
+  display: flex;
+  justify-content: center;
+}
+
+.form-width-limit {
+  width: 500px;
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  border: 1px solid #cbcbcb;
+  border-radius: 1rem;
+  margin-top: 2rem;
+}
+
+.btn-primary {
+  padding-left: 1.2rem;
+  padding-right: 1.2rem;
+  align-self: center;
+}
+
+
+
+
+
