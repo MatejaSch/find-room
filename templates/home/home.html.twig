@@ -1,7 +1,17 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}Welcome to Find room!{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    {{ encore_entry_link_tags('home') }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ encore_entry_script_tags('home') }}
+{% endblock %}
 
 {% block body %}
-
+    {% include 'includes/navbar.html.twig' %}
+    <div class="first-block">
+    </div>
 {% endblock %}

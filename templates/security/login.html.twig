@@ -9,6 +9,7 @@
         </div>
     {% endif %}
     <div class="content">
+        {% include 'includes/navbar.html.twig' %}
         <form method="post" class="form-width-limit">
 
             {% for email_sent in app.flashes('email_sent') %}
@@ -26,7 +27,7 @@
                 <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" autocomplete="email" required autofocus>
             </div>
 
-            <div class="mb-3">
+            <div class="mb-1">
                 <label class="form-label" for="inputPassword">Password</label>
                 <input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required>
             </div>
@@ -46,6 +47,7 @@
                 </label>
             </div>
             #}
+            <div class="d-flex mb-3"><a href="{{ path('app_resend_verification') }}">Resend verification email</a></div>
             {% if error %}
                 <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
             {% endif %}
