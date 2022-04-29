@@ -1,2 +1,9 @@
 @import "~bootstrap/dist/css/bootstrap.css";
 @import "forms.scss";
+@import "navbar.scss";
+
+body {
+  background-image: url("../images/default_background.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+}

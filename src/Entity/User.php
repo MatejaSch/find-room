@@ -32,19 +32,19 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         pattern: '/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z \d@$!%*#?&]{8,20}$/',
         message: "Password must contain at least 8 and maximum 20 chars of which at least one is letter, digit and a special character")]
     #[Assert\Notblank]
-    private string $plain_password;
+    private $plainPassword;
 
     #[ORM\Column(type: 'boolean')]
-    private bool $is_verified = false;
+    private bool $isVerified = false;
 
-    public function setPlainPassword($plain_password): void
+    public function setPlainPassword($plainPassword): void
     {
-        $this->plain_password = $plain_password;
+        $this->plainPassword = $plainPassword;
     }
 
-    public function getPlainPassword(): string
+    public function getPlainPassword(): ?string
     {
-        return $this->plain_password;
+        return $this->plainPassword;
     }
 
     public function getId(): int
@@ -114,17 +114,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function eraseCredentials()
     {
         // If you store any temporary, sensitive data on the user, clear it here
-        // $this->plainPassword = null;
+        $this->plainPassword = null;
     }
 
     public function getIsVerified(): ?bool
     {
-        return $this->is_verified;
+        return $this->isVerified;
     }
 
-    public function setIsVerified(bool $is_verified): self
+    public function setIsVerified(bool $isVerified): self
     {
-        $this->is_verified = $is_verified;
+        $this->isVerified = $isVerified;
 
         return $this;
     }
