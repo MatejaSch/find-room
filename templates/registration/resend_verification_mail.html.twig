@@ -1,0 +1,10 @@
+{% extends 'base.html.twig'%}
+{% block body %}
+    <div class="content">
+        {{ form_start(form) }}
+            <h1 class="h2 mb-3 font-weight-normal">Resend verification email</h1>
+            {{ form_row(form.email) }}
+            <input type="submit" class="btn btn-primary" value="Resend verification email">
+        {{ form_end(form) }}
+    </div>
+{% endblock %}
