@@ -1,0 +1,42 @@
+@import url('https://fonts.googleapis.com/css2?family=Shippori+Antique&display=swap');
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  position: fixed;
+  width: 100%;
+  padding: 2px 300px;
+  background: #333;
+
+  #logo {
+    font-family: 'Shippori Antique', sans-serif;
+    font-weight: bold;
+    font-size: 32px;
+    a {
+      color: #FFF3D4;
+    }
+  }
+
+  /*ADD HOVER BACKGROUND STYLE FOR BUTTONS? */
+
+  #button_login, #button_register {
+    padding: 8px 16px;
+    margin-left: 10px;
+    color: #FFF;
+    border-radius: 5px;
+  }
+
+  #button_login {
+    border: 1px solid #fff;
+  }
+
+  #button_register {
+    background: #3CA2FF;
+  }
+
+
+  a {
+    text-decoration: none;
+  }
+
+}
