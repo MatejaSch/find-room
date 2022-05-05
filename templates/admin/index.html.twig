@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello Admin!{% endblock %}
+
+{% block body %}
+    {% include 'includes/navbar.html.twig' %}
+
+    <div class="content">
+
+        {{ form_start(form) }}
+        <h2 class="h2 mb-3 font-weight-normal">Add new room</h2>
+            {{ form_row(form.number) }}
+            {{ form_row(form.floor) }}
+            {{ form_row(form.capacity) }}
+            {{ form_row(form.description) }}
+            <input type="submit" class="btn btn-primary" value="Register">
+        {{ form_end(form) }}
+    </div>
+
+{% endblock %}

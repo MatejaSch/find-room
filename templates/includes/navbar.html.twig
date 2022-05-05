@@ -3,7 +3,12 @@
         <a href="{{ path('app_home') }}"> FIND ROOM </a>
     </div>
     <nav>
-        <a id="button_login" href="{{ path('app_login') }}">Login</a>
-        <a id="button_register" href="{{ path('app_register') }}">Register</a>
+        {% if not app.user() %}
+            <a class="nav-button" id="button_login" href="{{ path('app_login') }}">Login</a>
+            <a class="nav-button" id="button_register" href="{{ path('app_register') }}">Register</a>
+        {% endif %}
+        {% if is_granted("ROLE_ADMIN") %}
+            <a class="nav-button" id="button_admin" href="{{ path('app_admin') }}">Admin</a>
+        {% endif %}
     </nav>
 </div>

@@ -19,14 +19,14 @@
 
   /*ADD HOVER BACKGROUND STYLE FOR BUTTONS? */
 
-  #button_login, #button_register {
+  .nav-button {
     padding: 8px 16px;
     margin-left: 10px;
     color: #FFF;
     border-radius: 5px;
   }
 
-  #button_login {
+  #button_login, #button_admin{
     border: 1px solid #fff;
   }
 
