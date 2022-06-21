@@ -26,7 +26,7 @@ class ResendVerificationMailType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'attr' => ['class' => 'form-width-limit'],
+            'attr' => ['class' => 'form-width-limit form-margin-top'],
         ]);
     }
 }

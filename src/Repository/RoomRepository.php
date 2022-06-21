@@ -45,6 +45,33 @@ class RoomRepository extends ServiceEntityRepository
         }
     }
 
+    public function findAllRoomCapacities()
+    {
+        return $this->createQueryBuilder('r')
+            ->select('r.capacity')
+            ->groupBy('r.capacity')
+            ->orderBy('r.capacity', 'ASC')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
+    public function findAllOffers($value = null)
+    {
+        $qb =  $this->createQueryBuilder('r')
+            ->select('r.capacity', 'r.singleBed', 'r.doubleBed', 'r.pricePerNight');
+
+        if ($value !== null) {
+            $qb->where("r.capacity = $value");
+        }
+        return $qb->groupBy('r.capacity', 'r.singleBed', 'r.doubleBed', 'r.pricePerNight')
+            ->orderBy('r.capacity', 'ASC')
+            ->getQuery()
+            ->getResult();
+
+    }
+
+
     // /**
     //  * @return Room[] Returns an array of Room objects
     //  */

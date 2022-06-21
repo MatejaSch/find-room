@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello Admin!{% endblock %}
+{% block javascripts %}
+    {{ encore_entry_script_tags('admin') }}
+    {{ encore_entry_script_tags('admin_room_add') }}
+{% endblock %}
+
+{% block body %}
+    {% include 'includes/navbar.html.twig' %}
+
+    <div class="content">
+        {% include 'admin/includes/admin_menu.html.twig' %}
+        {{ form_start(form) }}
+            {% for message in app.flashes('success') %}
+                <div class="alert alert-success">{{ message }}</div>
+            {% endfor %}
+            <h2 class="h2 mb-3 font-weight-normal">Add new room</h2>
+            {{ form_row(form.number) }}
+            {{ form_row(form.floor) }}
+            {{ form_row(form.singleBed) }}
+            {{ form_row(form.doubleBed) }}
+            <div class="mb-2">Capacity: <span id="capacity">0</span></div>
+            {{ form_row(form.description) }}
+            <input type="submit" class="btn btn-primary" value="Add room">
+        {{ form_end(form) }}
+    </div>
+
+{% endblock %}

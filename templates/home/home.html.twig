@@ -12,6 +12,37 @@
 
 {% block body %}
     {% include 'includes/navbar.html.twig' %}
-    <div class="first-block">
+    <div class="first-block d-flex align-items-center justify-content-around">
+        <div  style="background: rgba(255,255,255,0.9); border-radius: 10px;">
+            <h2 class="text-center mt-3">Looking for room?</h2>
+            <form style="width: 800px" action="{{ path('app_offers') }}"  method="GET" class="m-3">
+                <div class="d-flex justify-content-evenly">
+
+                    <div class="input-group mb-3 mx-2">
+                        <div class="input-group-prepend">
+                            <label class="input-group-text" for="room_capacity">Room capacity: </label>
+                        </div>
+                        <select class="form-control" id="room_capacity" name="room_capacity">
+                            {% for capacity in capacities %}
+                                <option value="{{ capacity.capacity }}">{{ capacity.capacity }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="input-group mb-3 mx-2">
+                        <div class="input-group-prepend">
+                            <label class="input-group-text" for="check_in">Check in: </label>
+                        </div>
+                       <input type="date" name="check_in" min="{{ today }}" max="{{ yearFromToday }}" value="{{ today }}" id="check_in" class="form-control" placeholder="">
+                    </div>
+                    <div class="input-group mb-3 mx-2">
+                        <div class="input-group-prepend">
+                            <label class="input-group-text" for="check_out">Check out: </label>
+                        </div>
+                        <input type="date" name="check_out"  min="{{ today }}" max="{{ yearFromToday }}" value="{{ today }}" id="check_out" class="form-control" placeholder="">
+                    </div>
+                </div>
+                <div class="d-flex justify-content-center"><input class="btn btn-primary" type="submit" value="Find room!"></div>
+            </form>
+        </div>
     </div>
 {% endblock %}

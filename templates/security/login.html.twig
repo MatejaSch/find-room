@@ -10,7 +10,7 @@
     {% endif %}
     <div class="content">
         {% include 'includes/navbar.html.twig' %}
-        <form method="post" class="form-width-limit">
+        <form method="post" class="form-width-limit form-margin-top">
 
             {% for email_sent in app.flashes('email_sent') %}
                 <div class="alert alert-success" role="alert">{{ email_sent }}</div>

@@ -3,42 +3,66 @@
 namespace App\Entity;
 
 use App\Repository\RoomRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use phpDocumentor\Reflection\PseudoTypes\Numeric_;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: RoomRepository::class)]
+#[UniqueEntity('number', message: "Room with this number already exists")]
 class Room
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    private $id;
+    private int $id;
 
     #[ORM\Column(type: 'string', length: 5)]
     #[Assert\Length(min: 1, max: 5)]
     #[Assert\Type(type: 'numeric')]
     #[Assert\PositiveOrZero]
     #[Assert\NotBlank]
-    private $number;
+    private string $number;
 
     #[ORM\Column(type: 'string', length: 2, nullable: true)]
     #[Assert\Length(max: 2)]
     #[Assert\Type(type: 'numeric')]
-    private $floor;
+    private string $floor;
 
     #[ORM\Column(type: 'smallint')]
-    #[Assert\Length(max: 2)]
-    #[Assert\Type(type: 'numeric')]
-    #[Assert\Positive]
-    #[Assert\NotBlank]
-    private $capacity;
+    #[Assert\Length(max: 2, groups: ['capacity'])]
+    #[Assert\Type(type: 'numeric', groups: ['capacity'])]
+    #[Assert\Positive(groups: ['capacity'])]
+    #[Assert\NotBlank(groups: ['capacity'])]
+    private int $capacity;
 
     #[ORM\Column(type: 'text', nullable: true)]
     #[Assert\Length(
         max: 300
     )]
-    private $description;
+    private string $description;
+
+    #[Assert\Type(type: 'integer')]
+    #[Assert\Range(min: 0, max: 10)]
+    #[Assert\NotBlank]
+    #[ORM\Column(type: 'integer')]
+    private int $doubleBed;
+
+
+    #[Assert\Type(type: 'integer')]
+    #[Assert\Range(min: 0, max: 10)]
+    #[Assert\NotBlank]
+    #[ORM\Column(type: 'integer')]
+    private int $singleBed;
+
+    #[ORM\ManyToOne(targetEntity: Offer::class, inversedBy: 'rooms')]
+    private $offer;
+
+
+    public function __construct()
+    {
+    }
 
     public function getId(): ?int
     {
@@ -92,4 +116,43 @@ class Room
 
         return $this;
     }
+
+    public function getDoubleBed(): ?int
+    {
+        return $this->doubleBed;
+    }
+
+    public function setDoubleBed(int $doubleBed): self
+    {
+        $this->doubleBed = $doubleBed;
+
+        return $this;
+    }
+
+    public function getSingleBed(): ?int
+    {
+        return $this->singleBed;
+    }
+
+    public function setSingleBed(int $singleBed): self
+    {
+        $this->singleBed = $singleBed;
+
+        return $this;
+    }
+
+
+    public function getOffer(): ?Offer
+    {
+        return $this->offer;
+    }
+
+    public function setOffer(?Offer $offer): self
+    {
+        $this->offer = $offer;
+
+        return $this;
+    }
+
+
 }

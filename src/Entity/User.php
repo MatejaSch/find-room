@@ -32,7 +32,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         pattern: '/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z \d@$!%*#?&]{8,20}$/',
         message: "Password must contain at least 8 and maximum 20 chars of which at least one is letter, digit and a special character")]
     #[Assert\Notblank]
-    private $plainPassword;
+    private ?string $plainPassword;
 
     #[ORM\Column(type: 'boolean')]
     private bool $isVerified = false;

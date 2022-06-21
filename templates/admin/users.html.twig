@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello Admin!{% endblock %}
+{% block javascripts %}
+    {{ encore_entry_script_tags('admin') }}
+{% endblock %}
+{% block body %}
+    {% include 'includes/navbar.html.twig' %}
+
+    <div class="content">
+        {% include 'admin/includes/admin_menu.html.twig' %}
+
+        <div class="w-100 px-5 py-3">
+            {% for message in app.flashes('success') %}
+                <div class="alert alert-success text-center">{{ message }}</div>
+            {% endfor %}
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th scope="col">Email</th>
+                    <th scope="col">Roles</th>
+                    <th scope="col">Verified</th>
+                    <th scope="col">Options</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for user in users %}
+                    <tr class="align-middle">
+                        <th scope="row">{{ user.email }}</th>
+                        <td>{{ user.roles|join(' | ') }}</td>
+                        <td>{{ user.isVerified }}</td>
+                        <td><a href="../user/{{ user.id }}"><button class="btn btn-danger btn-sm  me-2">DENY ACCESS</button></a></td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+{% endblock %}
