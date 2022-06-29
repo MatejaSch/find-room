@@ -7,6 +7,7 @@
   background: #333;
   display: flex;
   justify-content: center;
+  z-index: 999;
 }
 .navbar {
   display: flex;
@@ -55,6 +56,7 @@
     color: #d0d0d0;
 
     & > a {
+      z-index: 999;
       display: block;
       padding: 10px 30px;
       color: #d0d0d0;

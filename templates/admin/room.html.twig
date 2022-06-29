@@ -4,8 +4,6 @@
 {% block javascripts %}
     {{ encore_entry_script_tags('admin') }}
     {{ encore_entry_script_tags('admin_room_add') }}
-    {{ encore_entry_script_tags('admin_room') }}
-
 {% endblock %}
 
 {% block body %}
@@ -24,17 +22,20 @@
             {{ form_row(form.doubleBed) }}
             <div class="mb-2">Capacity: <span id="capacity">{{ room.capacity }}</span></div>
             {{ form_row(form.description) }}
-{#            <div class="room-images d-flex flex-wrap align-items-center justify-content-around">#}
-{#                {% for image in images %}#}
-{#                    <div class="room-image">#}
-{#                        <img src="{{ asset('uploads/images/') ~ image.fileName }}">#}
-{#                        <i class="bi bi-x remove-image" data-image-id="{{ image.id }}"></i>#}
-{#                    </div>#}
-{#                {% endfor %}#}
-{#            </div>#}
-            <input type="text" id="remove_image_ids" hidden name="remove-image-ids">
+
+            {% if offerError is not defined and not null %}
+                {{ form_label(form.offer) }}
+                {{ form_widget(form.offer) }}
+            {% else %}
+                {{ form_label(form.offer) }}
+                {{ form_widget(form.offer, {'attr': {'class': 'form-control is-invalid'}}) }}
+                <div class="invalid-feedback d-block">
+                    {{ offerError }}
+                </div>
+            {% endif %}
+
             <div class="d-flex justify-content-evenly">
-                <input type="submit" class="btn btn-primary" value="Update room">
+                <input type="submit" class="mt-3 btn btn-primary" value="Save changes">
 {#                <a href="delete/{{ room.id }}"><button class="btn btn-danger">Delete</button></a>#}
             </div>
         {{ form_end(form) }}

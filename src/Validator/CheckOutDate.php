@@ -5,7 +5,7 @@ namespace App\Validator;
 use Symfony\Component\Validator\Constraint;
 
 #[\Attribute]
-class CheckInDate extends Constraint
+class CheckOutDate extends Constraint
 {
-    public $message = "The check in date isn't valid";
+    public $message = "The check out date isn't valid";
 }

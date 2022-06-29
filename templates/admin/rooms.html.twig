@@ -20,10 +20,11 @@
                 <tr>
                     <th scope="col">Number</th>
                     <th scope="col">Floor</th>
-                    <th scope="col">Single Beds (quantity)</th>
-                    <th scope="col">Double Beds (quantity)</th>
+                    <th scope="col">Single Beds</th>
+                    <th scope="col">Double Beds</th>
                     <th scope="col">Capacity</th>
                     <th scope="col">Description</th>
+                    <th scope="col">Offer</th>
                     <th scope="col">Options</th>
                 </tr>
                 </thead>
@@ -35,11 +36,12 @@
                         <td>{{ room.singleBed }}</td>
                         <td>{{ room.doubleBed }}</td>
                         <td>{{ room.capacity }}</td>
-                        <td class="description"><div class="text-truncate ">{{ room.description }}</div></td>
+                        <td class="description"><div class="text-truncate">{% if room.description is defined and not null %}{{ room.description }}{% endif %}</div></td>
+                        <td class="offer"><div class="text-truncate">{% if room.offer.title is defined and not null %}{{ room.offer.title }}{% endif %}</div></td>
                         <td>
                             <div class="d-flex mh-100 flex-nowrap">
-                                <a href="../room/{{ room.id }}"><button class="btn btn-info btn-sm  me-2">VIEW (EDIT)</button></a>
-                                <a href="../room/delete/{{ room.id }}"><button class="btn btn-danger btn-sm">DELETE</button></a>
+                                <a href="room/{{ room.id }}"><button class="btn btn-info btn-sm  me-2">VIEW (EDIT)</button></a>
+                                <a href="room/delete/{{ room.id }}"><button class="btn btn-danger btn-sm">DELETE</button></a>
                             </div>
                         </td>
                     </tr>

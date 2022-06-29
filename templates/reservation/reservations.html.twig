@@ -1,0 +1,87 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Find room!{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+{% endblock %}
+
+{% block javascripts %}
+
+{% endblock %}
+
+{% block body %}
+    {% include 'includes/navbar.html.twig' %}
+    <div class="d-flex flex-column align-items-center justify-content-around" style="position: relative; padding-top: 100px; z-index:1;">
+        {% for message in app.flashes('success') %}
+            <div class="col-5 alert alert-success">{{ message }}</div>
+        {% endfor %}
+        <div class="h2">Your reservations</div>
+        {% if reservations is not empty %}
+        <div class="container mt-5">
+            <div class="h2">Your reservations</div>
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th scope="col">Room</th>
+                    <th scope="col">Check In</th>
+                    <th scope="col">Check out</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Reviewed?</th>
+                    <th scope="col">Options</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for reservation in reservations %}
+                    <tr class="align-middle">
+                        <th scope="row" class="">{{ reservation.room.number }}</th>
+                        <td class="">{{ reservation.checkIn|date("m/d/Y") }}</td>
+                        <td class="">{{ reservation.checkOut|date("m/d/Y") }}</td>
+                        <td class="">{{ reservation.price }}</td>
+                        <td class="">{{ reservation.isReviewed ? "Reviewed" : "Not yet" }}</td>
+                        <td class="">
+                            <a href="reservation/cancel/{{ reservation.id }}"><button class="btn btn-danger btn-sm">Cancel</button></a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% endif %}
+
+        {% if cancelledReservations is not empty %}
+        <div class="container  mt-5">
+            <div class="h2">Cancelled reservations</div>
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th scope="col">Room</th>
+                    <th scope="col">Check In</th>
+                    <th scope="col">Check out</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Cancelled by</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for reservation in cancelledReservations %}
+                    <tr class="align-middle">
+                        <th scope="row" class="">{{ reservation.room.number }}</th>
+                        <td class="">{{ reservation.checkIn|date("m/d/Y") }}</td>
+                        <td class="">{{ reservation.checkOut|date("m/d/Y") }}</td>
+                        <td class="">{{ reservation.price }}</td>
+                        <td class="">
+                            {% if reservation.cancelledBy.email is defined  and not null%}
+                                {{  reservation.cancelledBy.email}}
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% endif %}
+        {% if reservations is empty and cancelledReservations is empty %}
+            <div class="text-center">No reservations</div>
+        {% endif %}
+    </div>
+
+{% endblock %}

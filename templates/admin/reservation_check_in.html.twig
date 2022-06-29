@@ -1,0 +1,54 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Find room!{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ encore_entry_script_tags('admin') }}
+{% endblock %}
+
+{% block body %}
+    {% include 'includes/navbar.html.twig' %}
+    <div class="content">
+        {% include 'admin/includes/admin_menu.html.twig' %}
+
+        {% for message in app.flashes('success') %}
+            <div class="col-5 alert alert-success">{{ message }}</div>
+        {% endfor %}
+
+        {{ form_start(guestForm) }}
+            {{ form_row(guestForm.fullName) }}
+            {{ form_row(guestForm.idNumber) }}
+            <input type="submit" class="btn btn-primary" value="Add guest">
+        {{ form_end(guestForm) }}
+
+        {% if guests is not empty %}
+            <div class="container mt-5">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th scope="col">Full name</th>
+                        <th scope="col">Identification number</th>
+                        <th scope="col">Options</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for guest in guests %}
+                        <tr class="align-middle">
+                            <th scope="row">{{ guest.fullName }}</th>
+                            <td>{{ guest.idNumber }}</td>
+                            <td><a href="../{{ reservationID}}/remove-guest/{{ guest.id }}"><button class="btn btn-danger btn-sm  me-2">Remove guest</button></a></td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+                <div class="d-flex justify-content-center"><a href="../{{ reservationID}}/"><button class="btn btn-primary btn-sm  my-4">Check in reservation</button></a></div>
+            </div>
+        {% else %}
+            <div class="text-center pt-5">No guests added yet</div>
+        {% endif %}
+    </div>
+
+{% endblock %}

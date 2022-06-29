@@ -17,7 +17,6 @@ class EmailResendVerifyValidator extends ConstraintValidator
 
     public function validate($value, Constraint $constraint)
     {
-        /* @var App\Validator\EmailResendVerify $constraint */
 
         if (null === $value || '' === $value) {
             return;

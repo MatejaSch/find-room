@@ -41,6 +41,7 @@
                             <td class="">{{ reservation.checkOut|date("m/d/Y") }}</td>
                             <td class="">{{ reservation.price }}</td>
                             <td class="">
+                                <a href="../reservation/check-in/{{ reservation.id }}/add-guests"><button class="btn btn-success btn-sm">Check-in</button></a>
                                 <a href="../reservation/cancel/{{ reservation.id }}"><button class="btn btn-danger btn-sm">Cancel</button></a>
                             </td>
                         </tr>

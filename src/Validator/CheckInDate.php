@@ -2,7 +2,10 @@
 
 namespace App\Validator;
 
-class CheckInDate
-{
+use Symfony\Component\Validator\Constraint;
 
+#[\Attribute]
+class CheckInDate extends Constraint
+{
+    public $message = "The check in date isn't valid";
 }

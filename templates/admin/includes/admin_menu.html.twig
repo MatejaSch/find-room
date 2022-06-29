@@ -1,6 +1,11 @@
 <div class="admin-menu">
-    <a class="menu-link" href="{{ path('admin_rooms') }}"><button type="button" class="btn btn-outline-primary">Show all rooms</button></a>
-    <a class="menu-link" href="{{ path('admin_room_add') }}"><button type="button" class="btn btn-outline-primary">Add new room</button></a>
-    <a class="menu-link" href="{{ path('admin_offer_add') }}"><button type="button" class="btn btn-outline-primary">Add new offer</button></a>
-    <a class="menu-link" href="{{ path('admin_users') }}"><button type="button" class="btn btn-outline-primary">Users</button></a>
+    <a class="menu-link" href="{{ path('admin_rooms') }}"><button type="button" class="btn {{  buttonShowAllRoomsActive is defined ? 'btn-primary' : 'btn-outline-primary'}} ">Show all rooms</button></a>
+    <a class="menu-link" href="{{ path('admin_room_add') }}"><button type="button" class="btn  {{  buttonAddRoomActive is defined ? 'btn-primary' : 'btn-outline-primary'}}">Add new room</button></a>
+    <a class="menu-link" href="{{ path('admin_offers') }}"><button type="button" class="btn {{  buttonShowAllOffersActive is defined ? 'btn-primary' : 'btn-outline-primary'}}">Show all offers</button></a>
+    <a class="menu-link" href="{{ path('admin_offer_add') }}"><button type="button" class="btn {{  buttonAddOfferActive is defined ? 'btn-primary' : 'btn-outline-primary'}}">Add new offer</button></a>
+    <a class="menu-link" href="{{ path('admin_users') }}"><button type="button" class="btn {{  buttonShowUsersActive is defined ? 'btn-primary' : 'btn-outline-primary'}}">Users</button></a>
+    <a class="menu-link" href="{{ path('admin_reservations_new') }}"><button type="button" class="btn {{  buttonShowNewReservationsActive is defined ? 'btn-primary' : 'btn-outline-primary'}}">New reservations</button></a>
+    <a class="menu-link" href="{{ path('admin_reservations_active') }}"><button type="button" class="btn {{  buttonShowReviewedReservationsActive is defined ? 'btn-primary' : 'btn-outline-primary'}}">Active reservations</button></a>
+    <a class="menu-link" href="{{ path('admin_reservations_cancelled') }}"><button type="button" class="btn {{  buttonShowCancelledReservationsActive is defined ? 'btn-primary' : 'btn-outline-primary'}}">Cancelled reservations</button></a>
+    <a class="menu-link" href="{{ path('admin_reservations_checked_in') }}"><button type="button" class="btn {{  buttonShowCheckedInReservations is defined ? 'btn-primary' : 'btn-outline-primary'}}">Checked in reservations</button></a>
 </div>

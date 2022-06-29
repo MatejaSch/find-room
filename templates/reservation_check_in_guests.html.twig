@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Find room!{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ encore_entry_script_tags('admin') }}
+{% endblock %}
+
+{% block body %}
+    {% include 'includes/navbar.html.twig' %}
+    <div class="content">
+        {% include 'admin/includes/admin_menu.html.twig' %}
+
+        {% for message in app.flashes('success') %}
+            <div class="col-5 alert alert-success">{{ message }}</div>
+        {% endfor %}
+
+        <div class="container mt-5">
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th scope="col">Reservation ID</th>
+                    <th scope="col">Full name</th>
+                    <th scope="col">Identification number</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for guest in reservation.reservationGuests %}
+                    <tr class="align-middle">
+                        <th scope="row">{{ reservation.id }}</th>
+                        <th scope="row">{{ guest.fullName }}</th>
+                        <td>{{ guest.idNumber }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+{% endblock %}

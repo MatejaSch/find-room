@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}View/Edit Offer{% endblock %}
+{% block javascripts %}
+    {{ encore_entry_script_tags('admin') }}
+    {{ encore_entry_script_tags('admin_offer') }}
+    {{ encore_entry_script_tags('admin_room_add') }}
+{% endblock %}
+{% block body %}
+    {% include 'includes/navbar.html.twig' %}
+
+    <div class="content">
+        {% include 'admin/includes/admin_menu.html.twig' %}
+
+        {{ form_start(form) }}
+            {% for message in app.flashes('success') %}
+                <div class="alert alert-success">{{ message }}</div>
+            {% endfor %}
+            <h2>Offer</h2>
+            {{ form_row(form.title) }}
+            {{ form_row(form.pricePerNight) }}
+            {{ form_row(form.description) }}
+            {{ form_row(form.singleBed) }}
+            {{ form_row(form.doubleBed) }}
+            <div class="mb-2">Capacity: <span id="capacity">{{ offer.capacity }}</span></div>
+            {{ form_row(form.images) }}
+            <div class="offer-images d-flex flex-wrap align-items-center justify-content-around">
+                {% for image in images %}
+                    <div class="offer-image">
+                        <img src="{{ asset('uploads/images/') ~ image.imageName }}">
+                        <i class="bi bi-x remove-image" data-image-id="{{ image.id }}"></i>
+                        <input type="radio" class="form-check-input thumbnail-radio" {% if offer.thumbnail is defined and not null and offer.thumbnail == image.imageName %} checked {% endif %} name="thumbnail" value="{{ image.imageName }}">
+                    </div>
+                {% endfor %}
+            </div>
+            <input type="text" id="remove_image_ids" hidden name="remove-image-ids">
+            <input class="btn btn-primary" type="submit" value="Save changes">
+        {{ form_end(form) }}
+
+
+    </div>
+
+{% endblock %}

@@ -5,7 +5,7 @@ namespace App\Validator;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
-class CheckInDateValidator extends ConstraintValidator
+class CheckOutDateValidator extends ConstraintValidator
 {
     public function validate($value, Constraint $constraint)
     {
@@ -15,14 +15,12 @@ class CheckInDateValidator extends ConstraintValidator
             return;
         }
 
-        $checkInMinimum = date("H") > 3 ? date("Y-m-d", strtotime("+1 day")) : date("Y-m-d");
-        $checkInMaximum = date("H") > 3 ? date("Y-m-d", strtotime("+1 year -1 day")) : date("Y-m-d", strtotime("+1 year -2 day"));
         $checkOutMinimum = date("H") > 3 ? date("Y-m-d", strtotime("+2 day")) : date("Y-m-d", strtotime("+1 day"));
         $checkOutMaximum = date("H") > 3 ? date("Y-m-d", strtotime("+1 year")) : date("Y-m-d", strtotime("+1 year -1 day"));
 
         $value =  date_format($value, 'Y-m-d');
 
-        if ($value < $checkInMinimum || $value > $checkInMaximum) {
+        if ($value < $checkOutMinimum || $value > $checkOutMaximum) {
             // the argument must be a string or an object implementing __toString()
             $this->context->buildViolation($constraint->message)
                 ->setParameter('{{ string }}', $value)

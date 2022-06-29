@@ -1,0 +1,59 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello Admin!{% endblock %}
+{% block javascripts %}
+    {{ encore_entry_script_tags('admin') }}
+{% endblock %}
+{% block body %}
+    {% include 'includes/navbar.html.twig' %}
+
+    <div class="content">
+        {% include 'admin/includes/admin_menu.html.twig' %}
+
+        <div class="w-100 px-5 py-3">
+            {% for message in app.flashes('success') %}
+                <div class="alert alert-success text-center">{{ message }}</div>
+            {% endfor %}
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th scope="col">Title</th>
+                    <th scope="col">Price per night ($)</th>
+                    <th scope="col">Description</th>
+                    <th scope="col">Capacity</th>
+                    <th scope="col">Single bed</th>
+                    <th scope="col">Double bed</th>
+                    <th scope="col">Thumbnail</th>
+                    <th scope="col">Options</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for offer in offers %}
+                    <tr class="align-middle">
+                        <th scope="row" class="">{{ offer.title }}</th>
+                        <td class="">{{ offer.pricePerNight }}</td>
+                        <td class=""><div class="text-truncate" style="max-width: 400px;">{{ offer.description }}</div></td>
+                        <td class="">{{ offer.capacity }}</td>
+                        <td class="">{{ offer.singleBed }}</td>
+                        <td class="">{{ offer.doubleBed }}</td>
+                        <td class="">{% if offer.thumbnail is null %}
+                                <span class="text-danger">Thumbnail isn't set!</span>
+                            {% else %}
+                                <span class="text-success">Thumbnail is set</span>
+                            {% endif %}
+                        </td>
+                        <td class="">
+                            <div class="d-flex mh-100 flex-nowrap">
+                                <a href="offer/{{ offer.id }}"><button class="btn btn-info btn-sm  me-2">VIEW (EDIT)</button></a>
+                                <a href="offer/delete/{{ offer.id }}"><button class="btn btn-danger btn-sm">DELETE</button></a>
+                            </div>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+{% endblock %}

@@ -1,0 +1,89 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Find room!{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ encore_entry_script_tags('offer') }}
+{#    {{ encore_entry_script_tags('calendar') }}#}
+    {{ encore_entry_script_tags('offer_room_availability') }}
+    {% if is_granted("ROLE_ADMIN") %}{{ encore_entry_script_tags('offer_book') }}{% endif %}
+{% endblock %}
+
+{% block body %}
+    {% include 'includes/navbar.html.twig' %}
+    <div class="d-flex align-items-center justify-content-around" style="position: relative; padding-top: 100px; z-index:1;">
+        <div class="container px-0 bg-white">
+            <div class="row align-items-center justify-content-evenly mx-1">
+                    <div class="bg-white text-center h2 py-5">{{ offer.title }}</div>
+                    <div class="row px-md-3 px-0 justify-content-around">
+                        <div class="col-md-3 col-12 d-flex flex-column align-items-center justify-content-evenly">
+                            <div class="py-md-0 py-4">
+                                <div class="w-100 py-1 text-start">Number of single beds: <span class="h5">{{ offer.singleBed }}</span></div>
+                                <div class="w-100 py-1 text-start">Number of double beds: <span class="h5">{{ offer.doubleBed }}</span></div>
+                                <div class="w-100 py-1  text-start">Capacity: <span class="h5">{{ offer.capacity }}</span></div>
+                            </div>
+                            <div class="py-2 h5">Price per night: <span class="h2">${{ offer.pricePerNight }}</span></div>
+                            <a href="#room_availability"><div class="btn btn-primary mb-4">Check room availability</div></a>
+                        </div>
+                        <div class="col-md-8 col-12" style="font-size: 18px;">{{ offer.description }}</div>
+                    </div>
+                    <div class="offer-images row my-5">
+                        {% for offerImage in offer.offerImages %}
+                            <div class="offer-image col-sm-12 col-md-6 col-lg-4 p-0">
+                                <img src="{{ asset('uploads/images/' ~ offerImage.imageName) }}" alt="offer image">
+                            </div>
+                        {% endfor %}
+                    </div>
+            </div>
+            <div class="container py-3" id="room_availability">
+
+                <div class="h1 text-center text-white py-3">Room availability</div>
+                <div class="row justify-content-evenly p-3">
+                    <div class="book-room col-md-5">
+                        <p class="text-center text-white text-justify">Use this form to check room availability for certain dates.</p>
+                        {{ form_start(formAvailability) }}
+                            <div id="availability_response_message"></div>
+                            <div class="h4 py-1">Check room availability</div>
+                            {{ form_row(formAvailability.checkIn) }}
+                            {{ form_row(formAvailability.checkOut) }}
+                            {{ form_row(formAvailability.offerID) }}
+                            <input type="submit" class="btn btn-primary" value="Check availability">
+                        {{ form_end(formAvailability) }}
+                    </div>
+
+{#                    <div class="col-lg-5 col-md-7 col-sm-12 mt-lg-0 mt-5">#}
+{#                        <p class="text-center text-white text-justify">This calendar shows days on which there are no available rooms from this offer.</p>#}
+{#                        <div class="bg-white p-2" id="calendar"></div>#}
+{#                    </div>#}
+                </div>
+            </div>
+
+
+            {% if is_granted("ROLE_USER") %}
+            <div class="container py-3" id="book_room">
+                <div class="h1 text-center p-3">Book a room</div>
+                <div class="row justify-content-evenly p-3">
+                    {{ form_start(formReservation) }}
+                    <div id="book_room_message"></div>
+                    <div class="h4 py-1">Book a room</div>
+                    {{ form_row(formReservation.createdBy) }}
+                    {{ form_row(formReservation.checkIn) }}
+                    {{ form_row(formReservation.checkOut) }}
+                    {{ form_row(formReservation.offer) }}
+                    {{ form_row(formReservation.price) }}
+                    {{ form_row(formReservation.offerID) }}
+                    <input type="submit" class="btn btn-primary" value="Book!">
+                    {{ form_end(formReservation) }}
+                </div>
+            </div>
+            {% else %}
+                <h2 class="text-center m-5" >Want to book a room? You must be logged in to book a room!</h2>
+                <div class="text-center py-2">Don't have an account? <a href="{{ path('app_register') }}">Register</a></div>
+                <div class="text-center py-2 mb-5">Already have an account?<a href="{{ path('app_login') }}"> Login</a></div>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
