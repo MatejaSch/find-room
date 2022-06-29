@@ -238,20 +238,34 @@ class AdminController extends AbstractController
         return $this->redirectToRoute('admin_offers');
     }
 
-    //TODO If offer (that is  joined to rooms) changes capacity - disconnect all rooms from it
+
     #[Route('admin/offer/{id}', name: 'admin_offer')]
     public function editOffer(int $id, Request $request, ImageUploader $imageUploader) : Response
     {
         /** @var Offer $offer */
         $offer = $this->doctrine->getRepository(Offer::class)->findOneBy(['id' => $id]);
+
+        /** @var Offer $oldOffer */
+        $oldOffer = clone $offer;
+
         $form = $this->createForm(OfferType::class, $offer);
         $form->handleRequest($request);
-
 
         /** @var OfferImage[] $offerImages */
         $offerImages = $offer->getOfferImages();
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            //If capacity of offer is changed, unlink all rooms from offer
+            if ($oldOffer->getSingleBed() !== $offer->getSingleBed() || $oldOffer->getDoubleBed() !== $offer->getDoubleBed()) {
+                /** @var Room[] $connectedRooms */
+                $connectedRooms = $offer->getRooms();
+                foreach ($connectedRooms as $room) {
+                    $room->setOffer(null);
+                    $this->entityManager->persist($room);
+                    $this->entityManager->flush();
+                }
+            }
 
             $offer->setCapacity($offer->getDoubleBed()*2 + $offer->getSingleBed());
 
