@@ -1,13 +1,20 @@
 @import url('https://fonts.googleapis.com/css2?family=Shippori+Antique&display=swap');
 
+.nav-wrap {
+  position: fixed;
+  width: 100%;
+  padding: 2px 0;
+  background: #333;
+  display: flex;
+  justify-content: center;
+  z-index: 999;
+}
 .navbar {
   display: flex;
   justify-content: space-between;
-  position: fixed;
+  padding: 0 5px;
+  max-width: 1200px;
   width: 100%;
-  padding: 2px 300px;
-  background: #333;
-
   #logo {
     font-family: 'Shippori Antique', sans-serif;
     font-weight: bold;
@@ -19,14 +26,14 @@
 
   /*ADD HOVER BACKGROUND STYLE FOR BUTTONS? */
 
-  #button_login, #button_register {
+  .nav-button {
     padding: 8px 16px;
     margin-left: 10px;
     color: #FFF;
     border-radius: 5px;
   }
 
-  #button_login {
+  #button_login, #button_admin, #button_logout{
     border: 1px solid #fff;
   }
 
@@ -39,4 +46,36 @@
     text-decoration: none;
   }
 
+  .menu {
+    display: none;
+    width: 200px !important;
+    text-align: center;
+    transform: translateX(5px);
+    top: 48px;
+    background: #333;
+    color: #d0d0d0;
+
+    & > a {
+      z-index: 999;
+      display: block;
+      padding: 10px 30px;
+      color: #d0d0d0;
+    }
+
+    & > a:hover {
+      color: #FFFFFF;
+    }
+
+  }
+  #hamburger_checkbox:checked + .menu {
+    display:flex;
+  }
+
+
+}
+
+@media (max-width: 500px) {
+  #button_logout, #button_admin, #button_login, #button_register {
+    display: none;
+  }
 }

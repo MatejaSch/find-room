@@ -17,7 +17,6 @@ class EmailResendVerifyValidator extends ConstraintValidator
 
     public function validate($value, Constraint $constraint)
     {
-        /* @var App\Validator\EmailResendVerify $constraint */
 
         if (null === $value || '' === $value) {
             return;
@@ -26,7 +25,7 @@ class EmailResendVerifyValidator extends ConstraintValidator
         /*
          *  Checks if user email is registered and not yet verified
          */
-        $notVerifiedUser = $this->userRepository->findOneBy(['email' => $value, 'is_verified' => false]);
+        $notVerifiedUser = $this->userRepository->findOneBy(['email' => $value, 'isVerified' => false]);
 
         if (null === $notVerifiedUser) {
             $this->context->buildViolation($constraint->message)

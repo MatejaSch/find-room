@@ -16,13 +16,20 @@ class UserChecker implements UserCheckerInterface
             return;
         }
 
-        if ($user->getIsVerified() === false) {
-            throw new CustomUserMessageAccountStatusException('Please verify your email address');
-        }
     }
 
     public function checkPostAuth(UserInterface $user)
     {
-        // TODO: Implement checkPostAuth() method.
+        if (!$user instanceof User) {
+            return;
+        }
+
+        if ($user->getIsVerified() === false) {
+            throw new CustomUserMessageAccountStatusException('Please verify your email address');
+        }
+
+        if ($user->isIsBanned() === true) {
+            throw new CustomUserMessageAccountStatusException('Your account has been banned');
+        }
     }
 }

@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Find room!{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ encore_entry_script_tags('offers') }}
+{% endblock %}
+
+{% block body %}
+    {% include 'includes/navbar.html.twig' %}
+    <div class="d-flex align-items-center justify-content-around" style="position: relative; top: 100px; z-index:1;">
+        <div class="container">
+            <div class="filters">
+                {{ form_start(formFilter) }}
+                    {{ form_row(formFilter.capacity) }}
+                    {{ form_row(formFilter.checkIn) }}
+                    {{ form_row(formFilter.checkOut) }}
+                    <input type="submit" class="btn btn-primary" value="Find available offers">
+                {{ form_end(formFilter) }}
+            </div>
+            <div class="row align-items-center justify-content-center mx-1">
+                {% for offer in offers %}
+                    <div class="offer-card position-relative bg-white shadow-sm col-5 text-center p-0 m-2">
+                        <div class="position-relative h-100" style="overflow: hidden; background: url({{ asset('uploads/images/' ~ offer.thumbnail) }})">
+                            <div class="position-absolute bottom-0 w-100 text-white py-2" style="z-index: 2;
+                            background: rgba(0,0,0,0.7)">{{ offer.title }}</div>
+                            <div class="h1 m-1 p-1 price-circle d-flex flex-column justify-content-center align-items-center">
+                                ${{ offer.pricePerNight }}
+                                <div style="font-size: 15px">Price per night</div>
+                            </div>
+                            <div class="h1 m-1 p-1 capacity-circle d-flex justify-content-center align-items-center">
+                                {{ offer.capacity is same as 1 ? '<i class="bi bi-person-fill"></i>' : '<i class="bi bi-people-fill"></i>'}}
+                                <span class="mx-1">{{ offer.capacity }}</span>
+                            </div>
+                        </div>
+                        <a href="{{ path('app_offer', {id: offer.id})}}{#{% if getParameters is defined %}{{getParameters}}{% endif %} #}">
+                            <div class="w-100 h-100 offer-card-overlay position-absolute top-0 align-items-center justify-content-center">
+                                <i class="bi bi-eye" style="font-size: 100px"></i>
+                            </div>
+                        </a>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

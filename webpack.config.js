@@ -29,6 +29,17 @@ Encore
      */
     .addEntry('app', './assets/app.js')
     .addEntry('home', './assets/javascript/home.js')
+    .addEntry('admin', './assets/javascript/admin.js')
+    .addEntry('admin_room_add', './assets/javascript/admin_room_add.js')
+    .addEntry('admin_rooms', './assets/javascript/admin_rooms.js')
+    .addEntry('admin_room', './assets/javascript/admin_room.js')
+    .addEntry('admin_offer', './assets/javascript/admin_offer.js')
+    .addEntry('offers', './assets/javascript/offers.js')
+    .addEntry('offer', './assets/javascript/offer.js')
+    .addEntry('calendar', './assets/javascript/calendar.js')
+    .addEntry('book', './assets/javascript/book.js')
+    .addEntry('offer_book', './assets/javascript/offer_book.js')
+    .addEntry('offer_room_availability', './assets/javascript/offer_room_availability.js')
 
     // enables the Symfony UX Stimulus bridge (used in assets/bootstrap.js)
     // .enableStimulusBridge('./assets/controllers.json')

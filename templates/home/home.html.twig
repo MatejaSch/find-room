@@ -12,6 +12,10 @@
 
 {% block body %}
     {% include 'includes/navbar.html.twig' %}
-    <div class="first-block">
+    <div class="first-block d-flex align-items-center justify-content-around">
+        <div  style="background: rgba(255,255,255,0.9); border-radius: 10px;">
+            <h2 class="text-center mt-3 p-5">Looking for room?</h2>
+            <div class="text-center mb-5"><a href="{{ path('app_offers') }}">Check our offers</a></div>
+        </div>
     </div>
 {% endblock %}
