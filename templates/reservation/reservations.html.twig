@@ -10,6 +10,11 @@
 {% endblock %}
 
 {% block body %}
+    <style>
+        .reservation {
+            overflow: auto;
+        }
+    </style>
     {% include 'includes/navbar.html.twig' %}
     <div class="d-flex flex-column align-items-center justify-content-around" style="position: relative; padding-top: 100px; z-index:1;">
         {% for message in app.flashes('success') %}
@@ -17,7 +22,7 @@
         {% endfor %}
         <div class="h2">Your reservations</div>
         {% if reservations is not empty %}
-        <div class="container mt-5">
+        <div class="reservation container mt-5">
             <div class="h2">Your reservations</div>
             <table class="table table-striped">
                 <thead>
@@ -49,7 +54,7 @@
         {% endif %}
 
         {% if cancelledReservations is not empty %}
-        <div class="container  mt-5">
+        <div class="reservation container  mt-5">
             <div class="h2">Cancelled reservations</div>
             <table class="table table-striped">
                 <thead>

@@ -198,7 +198,7 @@ class OfferController extends AbstractController
                     $reservation->setCreatedBy($user)->setRoom($room)->setCheckIn($checkIn)->setCheckOut($checkOut)->setPrice($price);
                     $this->entityManager->persist($reservation);
                     $this->entityManager->flush();
-                    $message = "Room has been booked on" . date_format($checkIn, "m-d-Y") . " to " . date_format($checkOut, "m-d-Y");
+                    $message = "Room has been booked on " . date_format($checkIn, "m-d-Y") . " to " . date_format($checkOut, "m-d-Y");
                     return $this->json(['success' => $message]);
                 }
 

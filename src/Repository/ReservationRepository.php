@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Reservation;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -40,7 +41,7 @@ class ReservationRepository extends ServiceEntityRepository
     }
 
     /**
-     * @return Reservation|Reservation[]|null
+     * @return Reservation[]|null
      */
     public function isRoomReservedInPeriod($roomID , $checkIn, $checkOut)
     {
@@ -53,8 +54,15 @@ class ReservationRepository extends ServiceEntityRepository
             ->orderBy('r.room', 'ASC')
             ->getQuery()
             ->getResult();
+    }
 
 
+    public function createCancelledReservationQueryBuilder(): QueryBuilder
+    {
+        return $this->createQueryBuilder('r')
+            ->AndWhere('r.cancelled = false')
+            ->AndWhere('r.isReviewed = false')
+            ;
     }
 
 

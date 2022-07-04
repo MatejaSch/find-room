@@ -7,7 +7,11 @@
 {% block body %}
     {% include 'includes/navbar.html.twig' %}
     <div class="content">
-        {% include 'admin/includes/admin_menu.html.twig' %}
+        {% if isDeviceMobile == true %}
+            {% include 'admin/includes/admin_menu_mobile.html.twig' %}
+        {% else %}
+            {% include 'admin/includes/admin_menu.html.twig' %}
+        {% endif %}
     </div>
 
 {% endblock %}

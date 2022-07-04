@@ -1,4 +1,4 @@
-window.addEventListener("DOMContentLoaded", async () => {
+window.addEventListener("DOMContentLoaded",  () => {
     const formReservation = document.querySelector("#form_reservation")
     const checkIn = document.querySelector("#reservation_checkIn");
     const checkOut = document.querySelector("#reservation_checkOut");
@@ -14,12 +14,14 @@ window.addEventListener("DOMContentLoaded", async () => {
     formReservation.addEventListener("submit", async (e) => {
         e.preventDefault();
 
+        document.querySelector("#book_room").disabled = true;
         if (isFormValid === true) {
             let response = await fetch('book-room', {
                 method: "POST",
                 body: new FormData(formReservation)
             });
             let data = await response.json();
+            document.querySelector("#book_room").disabled = false;
             if(data.success !== undefined) {
                 document.querySelector("#book_room_message").innerHTML = `<div class="alert alert-success">${data.success}</div> 
                 <div class="text-center"><a href="../reservations">Check your reservations</a></div>`;

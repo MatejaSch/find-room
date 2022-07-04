@@ -25,15 +25,4 @@ class SecurityController extends AbstractController
         return $this->render('security/login.html.twig', ['last_username' => $lastUsername, 'error' => $error]);
     }
 
-    #[Route(path: '/forgot-password', name: 'app_forgot_password')]
-    public function forgotPassword(): Response
-    {
-        if ($this->getUser()) {
-            return $this->redirectToRoute('app_home');
-        }
-
-        return $this->render('security/forgot_password.html.twig');
-    }
-
-
 }

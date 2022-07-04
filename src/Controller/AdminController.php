@@ -11,9 +11,13 @@ use App\Entity\User;
 use App\Form\OfferType;
 use App\Form\ReservationGuestType;
 use App\Form\RoomType;
+use App\Repository\UserRepository;
 use App\Service\ImageUploader;
+use Detection\MobileDetect;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
+use Pagerfanta\Doctrine\ORM\QueryAdapter;
+use Pagerfanta\Pagerfanta;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -27,18 +31,23 @@ class AdminController extends AbstractController
 
     private ManagerRegistry $doctrine;
     private EntityManagerInterface $entityManager;
+    private MobileDetect $mobileDetect;
 
-    public function __construct(EntityManagerInterface $entityManager, ManagerRegistry $doctrine)
+    public function __construct(EntityManagerInterface $entityManager, ManagerRegistry $doctrine, MobileDetect $mobileDetect)
     {
         $this->entityManager = $entityManager;
         $this->doctrine = $doctrine;
+        $this->mobileDetect = $mobileDetect;
 
     }
 
     #[Route('/admin', name: 'admin')]
     public function index(): Response
     {
-        return $this->render('admin/index.html.twig');
+        $isDeviceMobile = $this->mobileDetect->isMobile();
+        return $this->render('admin/index.html.twig', [
+            'isDeviceMobile' => $isDeviceMobile
+        ]);
     }
 
     #[Route('/admin/room/add', name: 'admin_room_add')]
@@ -245,6 +254,10 @@ class AdminController extends AbstractController
         /** @var Offer $offer */
         $offer = $this->doctrine->getRepository(Offer::class)->findOneBy(['id' => $id]);
 
+        if (!$offer) {
+            $this->redirectToRoute("admin_offers");
+        }
+
         /** @var Offer $oldOffer */
         $oldOffer = clone $offer;
 
@@ -282,12 +295,12 @@ class AdminController extends AbstractController
                     try {
                         $newFilename = $imageUploader->uploadImage($imageFile);
 
+
                         /** @var OfferImage offerImage */
                         $offerImage = new OfferImage();
                         $offerImage->setImageName($newFilename)->setOffer($offer);
                         $this->entityManager->persist($offerImage);
                     } catch (FileException $e) {
-                        //Redirect with error flash message
                     }
                 }
             }
@@ -390,6 +403,8 @@ class AdminController extends AbstractController
             'olderReservations' => $olderReservations,
             'user' => $user
         ]);
+
+
     }
 
     #[Route('admin/reservation/cancel/{reservationID}', name: 'admin_user_reservation_cancel')]
@@ -398,7 +413,7 @@ class AdminController extends AbstractController
         /** @var User $user */
         $user = $this->getUser();
         /** @var Reservation $reservation */
-        $reservation = $this->doctrine->getRepository(Reservation::class)->findOneBy(['id' => $reservationID, 'cancelled' => false, 'checkIn' => false]);
+        $reservation = $this->doctrine->getRepository(Reservation::class)->findOneBy(['id' => $reservationID, 'cancelled' => false, 'isCheckedIn' => false]);
         if ($reservation === null) {
             return $this->redirectToRoute("admin");
         }
@@ -408,6 +423,10 @@ class AdminController extends AbstractController
         $this->entityManager->persist($reservation);
         $this->entityManager->flush();
 
+        if ($this->mobileDetect->isMobile()) {
+            $this->addFlash("success", "Reservation has been cancelled");
+            return $this->redirectToRoute("admin_mobile_reservations_new");
+        }
 
         $this->addFlash("success", "Reservation has been cancelled");
         return $this->redirect($request->headers->get('referer'));
@@ -419,7 +438,7 @@ class AdminController extends AbstractController
         /** @var User $user */
         $user = $this->getUser();
         /** @var Reservation $reservation */
-        $reservation = $this->doctrine->getRepository(Reservation::class)->findOneBy(['id' => $reservationID, 'cancelled' => false, 'isReviewed' => false, 'isCheckedIn' => false]);
+        $reservation = $this->doctrine->getRepository(Reservation::class)->findOneBy(['id' => $reservationID, 'createdBy' => $user, 'cancelled' => false]);
         if ($reservation === null) {
             return $this->redirectToRoute("admin");
         }
@@ -429,6 +448,10 @@ class AdminController extends AbstractController
         $this->entityManager->persist($reservation);
         $this->entityManager->flush();
 
+        if ($this->mobileDetect->isMobile()) {
+            $this->addFlash("success", "Reservation has been accepted");
+            return $this->redirectToRoute("admin_mobile_reservations_new");
+        }
 
         $this->addFlash("success", "Reservation has been accepted");
         return $this->redirect($request->headers->get('referer'));
@@ -594,6 +617,102 @@ class AdminController extends AbstractController
         ]);
 
     }
+
+
+
+    #[Route('/admin/mobile/users/deny-access', name: 'admin_mobile_users_deny_access', methods: ["POST"])]
+    public function denyUserAccessMobile(Request $request)
+    {
+        /** @var User $user */
+        $user = $this->doctrine->getRepository(User::class)->findNonAdminUserByID($request->request->get("userID"));
+
+        if (null === $user) {
+            return $this->json(['error' => '1']);
+        }
+
+        $user->setIsBanned(true);
+        $this->entityManager->persist($user);
+        $this->entityManager->flush();
+
+        return $this->json(['success' => '1']);
+    }
+
+    #[Route('/admin/mobile/users/allow-access', name: 'admin_mobile_users_allow_access', methods: ["POST"])]
+    public function allowUserAccessMobile(Request $request)
+    {
+        /** @var User $user */
+        $user = $this->doctrine->getRepository(User::class)->findNonAdminUserByID($request->request->get("userID"));
+
+        if (null === $user) {
+            return $this->json(['error' => '1']);
+        }
+
+        $user->setIsBanned(false);
+        $this->entityManager->persist($user);
+        $this->entityManager->flush();
+
+        return $this->json(['success' => '1']);
+    }
+
+    #[Route('/admin/mobile/users', name: 'admin_mobile_users_get', methods: ["GET"])]
+    public function showUsersMobile(Request $request)
+    {
+        if (!$this->mobileDetect->isMobile()) {
+            return $this->redirectToRoute('admin_users');
+        }
+
+        return $this->render('admin/mobile/users.html.twig', [
+            'buttonMobileUsersActive' => 1,
+        ]);
+    }
+
+    #[Route('/admin/mobile/users', name: 'admin_mobile_users_post', methods: ["POST"])]
+    public function findUsersMobile(Request $request)
+    {
+        if (!$this->mobileDetect->isMobile()) {
+            return $this->json(['error' => '1']);
+        }
+
+        if ($request->request->get("search") === null){
+            return $this->json(['error' => '1']);
+        }
+
+        $search = $request->request->get("search");
+
+        /** @var User  $users */
+        $users = $this->doctrine->getRepository(User::class)->findUsersWhere($search);
+
+        $data = Array();
+        /** @var User $user */
+        foreach ($users as $user) {
+            $data[] = ['id' => $user->getId(), 'email' => $user->getEmail(), 'isBanned' => $user->isIsBanned(), 'roles' => $user->getRoles()];
+        }
+
+        return $this->json($data);
+    }
+
+    #[Route('/admin/mobile/reservations/new', name: 'admin_mobile_reservations_new')]
+    public function newReservationsMobile(Request $request)
+    {
+        if (!$this->mobileDetect->isMobile()) {
+            return $this->redirectToRoute("admin_reservations_new");
+        }
+
+        $queryBuilder = $this->doctrine->getRepository(Reservation::class)->createCancelledReservationQueryBuilder();
+        $pagerfanta = new Pagerfanta(
+            new QueryAdapter($queryBuilder)
+        );
+        $pagerfanta->setMaxPerPage(1);
+        $pagerfanta->setCurrentPage($request->query->get('page', 1));
+
+        return $this->render("admin/mobile/reservations_new.html.twig", [
+            'buttonMobileNewReservationsActive' => 1,
+            'pager' => $pagerfanta
+        ]);
+    }
+
+
+
 
 
 

@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello Admin!{% endblock %}
+{% block javascripts %}
+    {{ encore_entry_script_tags('admin') }}
+    {{ encore_entry_script_tags('admin_mobile_reservations_new') }}
+{% endblock %}
+{% block body %}
+    {% include 'includes/navbar.html.twig' %}
+
+    <div class="d-flex justify-content-center">{% include 'admin/includes/admin_menu_mobile.html.twig' %}</div>
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success my-3">{{ message }}</div>
+    {% endfor %}
+    <div class="content mx-2 d-flex flex-column justify-content-center" style="min-height: 60vh;" >
+
+        {% if pager.count != 0 %}
+            {% for reservation in pager %}
+                <div class="w-100 py-4 mb-4 bg-white d-flex flex-column align-items-center shadow-sm" style="border-radius: 10px;">
+                    <div class="my-2"><b>Created by:</b> {{ reservation.createdBy.email}}</div>
+                    <div class="my-2"><b>Room number:</b> {{ reservation.room.number}}</div>
+                    <div class="my-2"><b>Check in:</b> {{ reservation.checkIn|date()}}</div>
+                    <div class="my-2"><b>Check out:</b> {{ reservation.checkOut|date()}}</div>
+                    <div class="my-2"><b>Price:</b> {{ reservation.price}}</div>
+                    <div class="d-flex my-2">
+                        <a href="../../../admin/reservation/accept/{{ reservation.id }}"><div class="btn btn-success mx-4">Accept</div></a>
+                        <a href="../../../admin/reservation/cancel/{{ reservation.id }}"><div class="btn btn-danger mx-4">Cancel</div></a>
+                    </div>
+
+                </div>
+            {% endfor %}
+            {{ pagerfanta(pager, 'twitter_bootstrap5') }}
+        {% else %}
+            <div>There are no new offers.</div>
+        {% endif %}
+    </div>
+
+{% endblock %}

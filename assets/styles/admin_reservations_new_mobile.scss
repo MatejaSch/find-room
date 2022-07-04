@@ -1,0 +1,10 @@
+.pagination > *:not(:first-child):not(:last-child){
+  display:none;
+}
+
+.pagination {
+  width: 100%;
+  display: flex !important;
+  justify-content: space-between;
+}
+

@@ -9,6 +9,12 @@
 
 }
 
+@media (max-width: 525px) {
+  .form-width-limit {
+    width: 100%;
+  }
+}
+
 .form-margin-top{
   margin-top: 100px;
 }
